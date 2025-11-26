@@ -1,15 +1,14 @@
 import { create } from 'zustand';
 
-export type LatLng = {
-  lat: number;
-  lng: number;
-  accuracy?: number | null;
+export type Location = {
+  latitude: number;
+  longitude: number;
 };
 
 export type Loot = {
   id: string;
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
   collected: boolean;
 };
 
@@ -17,66 +16,59 @@ export type PermissionStatus = 'idle' | 'granted' | 'denied' | 'unsupported';
 
 type GameState = {
   /** Last raw GPS position from the device. */
-  userLocation: LatLng | null;
+  location: Location | null;
   /**
    * Smoothed location used for rendering the avatar.
    * This gets lerped towards the raw GPS location to avoid jitter.
    */
-  smoothedLocation: LatLng | null;
+  smoothedLocation: Location | null;
   permissionStatus: PermissionStatus;
   loot: Loot[];
   hasGeneratedInitialLoot: boolean;
 
-  setUserLocation: (location: LatLng) => void;
-  setSmoothedLocation: (location: LatLng) => void;
+  setLocation: (location: Location) => void;
+  setSmoothedLocation: (location: Location) => void;
   setPermissionStatus: (status: PermissionStatus) => void;
-  generateInitialLoot: (origin: LatLng, count?: number) => void;
+  generateInitialLoot: (origin: Location, count?: number) => void;
   setLootCollected: (lootId: string) => void;
 };
 
 /**
- * Returns a random point within a given radius (in meters) around an origin.
- * Uses a simple equirectangular approximation, more than good enough at < 1km scale.
+ * Generate a random loot position within ~0.005 degrees of the origin.
+ * This is a simple bounding box jitter – good enough for a city-scale game.
  */
-function randomPointAround(origin: LatLng, radiusMeters: number): LatLng {
-  const r = radiusMeters * Math.sqrt(Math.random()); // bias towards center
-  const theta = Math.random() * 2 * Math.PI;
-
-  const dx = (r * Math.cos(theta)) / 111_111; // meters -> degrees latitude
-  const dy =
-    (r * Math.sin(theta)) /
-    (111_111 * Math.cos((origin.lat * Math.PI) / 180)); // meters -> degrees longitude
-
+function randomLootPosition(origin: Location, delta = 0.005): Location {
+  const dLat = (Math.random() * 2 - 1) * delta;
+  const dLng = (Math.random() * 2 - 1) * delta;
   return {
-    lat: origin.lat + dx,
-    lng: origin.lng + dy,
+    latitude: origin.latitude + dLat,
+    longitude: origin.longitude + dLng,
   };
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
-  userLocation: null,
+  location: null,
   smoothedLocation: null,
   permissionStatus: 'idle',
   loot: [],
   hasGeneratedInitialLoot: false,
 
-  setUserLocation: (location) => set({ userLocation: location }),
+  setLocation: (location) => set({ location }),
 
   setSmoothedLocation: (location) => set({ smoothedLocation: location }),
 
   setPermissionStatus: (status) => set({ permissionStatus: status }),
 
-  generateInitialLoot: (origin, count = 7) => {
+  generateInitialLoot: (origin, count = 5) => {
     const state = get();
     if (state.hasGeneratedInitialLoot) return;
 
-    const radiusMeters = 500; // within 500m of the player's initial location
     const loot: Loot[] = Array.from({ length: count }).map((_, i) => {
-      const p = randomPointAround(origin, radiusMeters);
+      const p = randomLootPosition(origin, 0.005);
       return {
         id: `loot-${i}-${Date.now()}`,
-        lat: p.lat,
-        lng: p.lng,
+        latitude: p.latitude,
+        longitude: p.longitude,
         collected: false,
       };
     });

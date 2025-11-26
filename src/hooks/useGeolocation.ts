@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { LatLng, useGameStore } from '../store/gameStore';
+import { Location, useGameStore } from '../store/gameStore';
 
 type WatchOptions = PositionOptions;
 
@@ -20,23 +20,23 @@ const LERP_ALPHA = 0.12; // smoothing factor per frame (0–1)
  */
 export function useGeolocation(options: WatchOptions = DEFAULT_WATCH_OPTIONS) {
   const {
-    setUserLocation,
+    setLocation,
     setSmoothedLocation,
     setPermissionStatus,
     generateInitialLoot,
-    userLocation,
+    location,
     hasGeneratedInitialLoot,
   } = useGameStore((state) => ({
-    setUserLocation: state.setUserLocation,
+    setLocation: state.setLocation,
     setSmoothedLocation: state.setSmoothedLocation,
     setPermissionStatus: state.setPermissionStatus,
     generateInitialLoot: state.generateInitialLoot,
-    userLocation: state.userLocation,
+    location: state.location,
     hasGeneratedInitialLoot: state.hasGeneratedInitialLoot,
   }));
 
-  const targetLocationRef = useRef<LatLng | null>(null);
-  const smoothedLocationRef = useRef<LatLng | null>(null);
+  const targetLocationRef = useRef<Location | null>(null);
+  const smoothedLocationRef = useRef<Location | null>(null);
   const rafIdRef = useRef<number | null>(null);
 
   // Start / stop geolocation watch
@@ -52,14 +52,13 @@ export function useGeolocation(options: WatchOptions = DEFAULT_WATCH_OPTIONS) {
       (pos) => {
         if (!isMounted) return;
 
-        const next: LatLng = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          accuracy: pos.coords.accuracy ?? null,
+        const next: Location = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
         };
 
         setPermissionStatus('granted');
-        setUserLocation(next);
+        setLocation(next);
         targetLocationRef.current = next;
 
         // Seed the smoothed position if we don't have one yet.
@@ -103,15 +102,17 @@ export function useGeolocation(options: WatchOptions = DEFAULT_WATCH_OPTIONS) {
 
       const current = smoothedLocationRef.current ?? target;
 
-      const next: LatLng = {
-        lat: current.lat + (target.lat - current.lat) * LERP_ALPHA,
-        lng: current.lng + (target.lng - current.lng) * LERP_ALPHA,
-        accuracy: target.accuracy ?? current.accuracy ?? null,
+      const next: Location = {
+        latitude:
+          current.latitude + (target.latitude - current.latitude) * LERP_ALPHA,
+        longitude:
+          current.longitude +
+          (target.longitude - current.longitude) * LERP_ALPHA,
       };
 
       // If the movement is extremely tiny, we can skip store update to avoid needless renders.
-      const dLat = Math.abs(next.lat - current.lat);
-      const dLng = Math.abs(next.lng - current.lng);
+      const dLat = Math.abs(next.latitude - current.latitude);
+      const dLng = Math.abs(next.longitude - current.longitude);
       const threshold = 0.000002; // ~0.2m
 
       smoothedLocationRef.current = next;
@@ -132,7 +133,7 @@ export function useGeolocation(options: WatchOptions = DEFAULT_WATCH_OPTIONS) {
   }, [setSmoothedLocation]);
 
   return {
-    userLocation,
+    location,
   };
 }
 

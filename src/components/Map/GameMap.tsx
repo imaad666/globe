@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import Map, { MapRef, Marker, ViewState } from 'react-map-gl';
+import Map, { MapRef, Marker, ViewState } from 'react-map-gl/maplibre';
+// eslint-disable-next-line import/default
+import maplibregl from 'maplibre-gl';
 import { useGeolocation } from '../../hooks/useGeolocation';
 import { useGameStore } from '../../store/gameStore';
 import PlayerMarker from './PlayerMarker';
-
-const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN as string | undefined;
 
 const INITIAL_VIEW: ViewState = {
   latitude: 37.7749,
@@ -22,7 +22,7 @@ export const GameMap = () => {
     })
   );
 
-  const mapRef = useState<MapRef | null>(null)[0];
+  const [mapRef, setMapRef] = useState<MapRef | null>(null);
 
   // Start geolocation + smoothing loop.
   useGeolocation();
@@ -32,8 +32,9 @@ export const GameMap = () => {
     if (!smoothedLocation) return;
     setViewState((prev) => ({
       ...prev,
-      latitude: smoothedLocation.lat,
-      longitude: smoothedLocation.lng,
+      latitude: smoothedLocation.latitude,
+      longitude: smoothedLocation.longitude,
+      zoom: prev.zoom ?? 16,
     }));
   }, [smoothedLocation]);
 
@@ -44,8 +45,8 @@ export const GameMap = () => {
         .map((item) => (
           <Marker
             key={item.id}
-            longitude={item.lng}
-            latitude={item.lat}
+            longitude={item.longitude}
+            latitude={item.latitude}
             anchor="center"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-monad-purple/40 bg-monad-dark/80 text-[10px] font-semibold uppercase tracking-[0.12em] text-monad-purple shadow-neon-soft backdrop-blur-md">
@@ -61,38 +62,24 @@ export const GameMap = () => {
 
   return (
     <div className="relative h-full w-full bg-monad-dark text-white">
-      {!MAPBOX_TOKEN && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-monad-dark text-center text-sm text-red-400">
-          <div>
-            <p className="font-semibold">
-              Missing <code>VITE_MAPBOX_TOKEN</code>.
-            </p>
-            <p className="mt-1 opacity-80">
-              Add your Mapbox access token to a <code>.env</code> file to see
-              the map.
-            </p>
-          </div>
-        </div>
-      )}
-
       <Map
-        ref={mapRef}
-        mapboxAccessToken={MAPBOX_TOKEN}
+        ref={(instance) => setMapRef(instance)}
+        mapLib={maplibregl}
         initialViewState={viewState}
         onMove={(evt) => setViewState(evt.viewState)}
-        mapStyle="mapbox://styles/mapbox/dark-v11"
+        mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
         style={{ width: '100%', height: '100%' }}
         dragRotate={false}
         touchPitch={false}
         pitchWithRotate={false}
-        doubleClickZoom
         scrollZoom
-        touchZoomRotate
+        doubleClickZoom
+        touchZoomRotate={false}
       >
         {smoothedLocation && (
           <Marker
-            longitude={smoothedLocation.lng}
-            latitude={smoothedLocation.lat}
+            longitude={smoothedLocation.longitude}
+            latitude={smoothedLocation.latitude}
             anchor="center"
           >
             <PlayerMarker />
