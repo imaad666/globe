@@ -1,29 +1,26 @@
+import { APIProvider } from '@vis.gl/react-google-maps';
 import GameMap from './components/Map/GameMap';
 
-function App() {
-    return (
-        <div className="dark bg-monad-dark text-white">
-            {/* Full-screen, mobile-first layout */}
-            <div className="flex h-screen w-screen flex-col overflow-hidden">
-                {/* Top HUD strip – can later host TPS, wallet, etc. */}
-                <header className="z-20 flex items-center justify-between px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-gray-300/90">
-                    <span className="font-semibold text-monad-purple drop-shadow-neon-text">
-                        Monad Go
-                    </span>
-                    <span className="rounded-full border border-monad-purple/40 bg-monad-dark/80 px-2 py-0.5 text-[10px] text-gray-200 shadow-neon-soft backdrop-blur-md">
-                        GPS: Live
-                    </span>
-                </header>
+const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 
-                {/* Core game canvas */}
-                <main className="relative flex-1">
-                    <GameMap />
-                </main>
-            </div>
+function App() {
+  if (!GOOGLE_MAPS_KEY) {
+    return (
+      <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#242f3e', color: '#d59563' }}>
+        <div>
+          <p>Missing VITE_GOOGLE_MAPS_KEY environment variable</p>
+          <p style={{ fontSize: '12px', marginTop: '8px', opacity: 0.7 }}>Add it to your .env file</p>
         </div>
+      </div>
     );
+  }
+
+  return (
+    <APIProvider apiKey={GOOGLE_MAPS_KEY}>
+      <GameMap />
+    </APIProvider>
+  );
 }
 
 export default App;
-
 

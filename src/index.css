@@ -2,22 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global game canvas feel – kill scroll/bounce and force full-screen. */
-html,
-body,
-#root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overscroll-behavior: none;
-  touch-action: none;
-  background-color: #202124;
-}
-
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
-    ui-sans-serif, sans-serif;
-}
-
-
