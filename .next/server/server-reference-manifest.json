@@ -1,0 +1,58 @@
+{
+  "node": {
+    "00ae7634af0d8c047fc0eaac0f5fc39e12f9bc7035": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fimaad%2Fi%2Fglobal%2Fsrc%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%2200ae7634af0d8c047fc0eaac0f5fc39e12f9bc7035%22%2C%22exportedName%22%3A%22getActiveLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22408c5c141a799e571317d06bc756131855f85de850%22%2C%22exportedName%22%3A%22getUserData%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22602f3f4f924d738dd222c7240b6d81bf1c9377a0f7%22%2C%22exportedName%22%3A%22claimLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22608aabe0aa2458613c2e14e63a189fab881d7d7fbb%22%2C%22exportedName%22%3A%22spawnLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "actions/game.ts",
+      "exportedName": "getActiveLoot"
+    },
+    "408c5c141a799e571317d06bc756131855f85de850": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fimaad%2Fi%2Fglobal%2Fsrc%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%2200ae7634af0d8c047fc0eaac0f5fc39e12f9bc7035%22%2C%22exportedName%22%3A%22getActiveLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22408c5c141a799e571317d06bc756131855f85de850%22%2C%22exportedName%22%3A%22getUserData%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22602f3f4f924d738dd222c7240b6d81bf1c9377a0f7%22%2C%22exportedName%22%3A%22claimLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22608aabe0aa2458613c2e14e63a189fab881d7d7fbb%22%2C%22exportedName%22%3A%22spawnLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "actions/game.ts",
+      "exportedName": "getUserData"
+    },
+    "602f3f4f924d738dd222c7240b6d81bf1c9377a0f7": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fimaad%2Fi%2Fglobal%2Fsrc%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%2200ae7634af0d8c047fc0eaac0f5fc39e12f9bc7035%22%2C%22exportedName%22%3A%22getActiveLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22408c5c141a799e571317d06bc756131855f85de850%22%2C%22exportedName%22%3A%22getUserData%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22602f3f4f924d738dd222c7240b6d81bf1c9377a0f7%22%2C%22exportedName%22%3A%22claimLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22608aabe0aa2458613c2e14e63a189fab881d7d7fbb%22%2C%22exportedName%22%3A%22spawnLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "actions/game.ts",
+      "exportedName": "claimLoot"
+    },
+    "608aabe0aa2458613c2e14e63a189fab881d7d7fbb": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fimaad%2Fi%2Fglobal%2Fsrc%2Factions%2Fgame.ts%22%2C%5B%7B%22id%22%3A%2200ae7634af0d8c047fc0eaac0f5fc39e12f9bc7035%22%2C%22exportedName%22%3A%22getActiveLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22408c5c141a799e571317d06bc756131855f85de850%22%2C%22exportedName%22%3A%22getUserData%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22602f3f4f924d738dd222c7240b6d81bf1c9377a0f7%22%2C%22exportedName%22%3A%22claimLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%2C%7B%22id%22%3A%22608aabe0aa2458613c2e14e63a189fab881d7d7fbb%22%2C%22exportedName%22%3A%22spawnLoot%22%2C%22filename%22%3A%22actions%2Fgame.ts%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser"
+      },
+      "filename": "actions/game.ts",
+      "exportedName": "spawnLoot"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "wXeYcZ6SDw88ShQKQycjXkNlPEeb9D+rN09beaIS7hs="
+}
