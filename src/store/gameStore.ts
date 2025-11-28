@@ -10,3 +10,4 @@ export const useGameStore = create<GameState>((set) => ({
   setLocation: (loc) => set({ location: loc }),
 }));
 
+

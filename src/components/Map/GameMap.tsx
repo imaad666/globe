@@ -23,10 +23,14 @@ export default function GameMap() {
   // Start geolocation tracking
   useGeolocation();
 
-  // Update map center when location changes
+  // Update map center when location changes (first time centers, subsequent updates pan smoothly)
   useEffect(() => {
     if (map && location) {
       map.setCenter({ lat: location.lat, lng: location.lng });
+      // Set zoom to street level when we first get location
+      if (map.getZoom() === 15) {
+        map.setZoom(16);
+      }
     }
   }, [map, location]);
 
@@ -84,13 +88,18 @@ export default function GameMap() {
       )}
       <Map
         style={{ width: '100vw', height: '100vh' }}
-        defaultCenter={{ lat: 12.9716, lng: 77.5946 }}
+        defaultCenter={location || { lat: 12.9716, lng: 77.5946 }}
         defaultZoom={15}
         disableDefaultUI={true}
         styles={mapStyles}
         onLoad={(mapInstance) => {
           console.log('Map loaded');
           setMap(mapInstance);
+          // If we already have location, center immediately
+          if (location) {
+            mapInstance.setCenter({ lat: location.lat, lng: location.lng });
+            mapInstance.setZoom(16);
+          }
         }}
         onError={(e) => {
           console.error('Map error:', e);
