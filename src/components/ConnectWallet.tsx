@@ -63,20 +63,12 @@ export function Connection() {
   const { disconnect } = useDisconnect();
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="bg-black/80 text-white px-4 py-2 rounded-lg">
-        <div className="text-xs text-gray-400">Address</div>
-        <div className="text-sm font-mono">
-          {address?.slice(0, 6)}...{address?.slice(-4)}
-        </div>
-      </div>
       <button
         onClick={() => disconnect()}
-        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition"
+      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg transition text-sm font-semibold w-full"
       >
         Disconnect
       </button>
-    </div>
   );
 }
 
