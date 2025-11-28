@@ -1,5 +1,8 @@
 import { Map } from '@vis.gl/react-google-maps';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useGameStore } from '../../store/gameStore';
+import { useGeolocation } from '../../hooks/useGeolocation';
+import PlayerMarker from './PlayerMarker';
 
 const mapStyles = [
   { "elementType": "geometry", "stylers": [{ "color": "#242f3e" }] },
@@ -14,6 +17,18 @@ const mapStyles = [
 
 export default function GameMap() {
   const [error, setError] = useState<string | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const location = useGameStore((state) => state.location);
+  
+  // Start geolocation tracking
+  useGeolocation();
+
+  // Update map center when location changes
+  useEffect(() => {
+    if (map && location) {
+      map.setCenter({ lat: location.lat, lng: location.lng });
+    }
+  }, [map, location]);
 
   if (error) {
     return (
@@ -49,20 +64,50 @@ export default function GameMap() {
   }
 
   return (
-    <Map
-      style={{ width: '100vw', height: '100vh' }}
-      defaultCenter={{ lat: 12.9716, lng: 77.5946 }}
-      defaultZoom={15}
-      disableDefaultUI={true}
-      styles={mapStyles}
-      onError={(e) => {
-        console.error('Map error:', e);
-        if (e?.message?.includes('ApiTargetBlocked') || e?.message?.includes('blocked')) {
-          setError('ApiTargetBlockedMapError: Your API key does not have access to Maps JavaScript API. Please enable it in Google Cloud Console.');
-        } else {
-          setError(e?.message || 'Failed to load map. Check console for details.');
-        }
-      }}
-    />
+    <>
+      {/* Debug info - remove in production */}
+      {location && (
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          zIndex: 1000,
+          backgroundColor: 'rgba(0,0,0,0.7)',
+          color: '#d59563',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          fontFamily: 'monospace'
+        }}>
+          Location: {location.lat.toFixed(6)}, {location.lng.toFixed(6)}
+        </div>
+      )}
+      <Map
+        style={{ width: '100vw', height: '100vh' }}
+        defaultCenter={{ lat: 12.9716, lng: 77.5946 }}
+        defaultZoom={15}
+        disableDefaultUI={true}
+        styles={mapStyles}
+        onLoad={(mapInstance) => {
+          console.log('Map loaded');
+          setMap(mapInstance);
+        }}
+        onError={(e) => {
+          console.error('Map error:', e);
+          if (e?.message?.includes('ApiTargetBlocked') || e?.message?.includes('blocked')) {
+            setError('ApiTargetBlockedMapError: Your API key does not have access to Maps JavaScript API. Please enable it in Google Cloud Console.');
+          } else {
+            setError(e?.message || 'Failed to load map. Check console for details.');
+          }
+        }}
+      >
+        {location && (
+          <>
+            <PlayerMarker position={location} />
+            {console.log('Rendering marker at:', location)}
+          </>
+        )}
+      </Map>
+    </>
   );
 }
